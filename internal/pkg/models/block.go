@@ -3,7 +3,10 @@ package models
 import "time"
 
 type Block struct {
+	//sha1 hash
 	Hash string
-	createdAt time.Time
-	lastModified time.Time
+	CreatedAt time.Time
+	LastModified time.Time
+	//base64 encoded string
+	TransactionID string
 }
