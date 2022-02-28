@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option go_package = "block/blockresolver";
+
+// Interface exported by the server.
+service BlockResolver {
+
+// A bidirectional streaming RPC in which the client micro service stub sends
+// a Block and receives a BlockId.
+
+// Chose to make this Bi-directional as the micro-service which has the client stub is creating a new Block every 7s
+// * see ~/internal/package/blockutils/constants.go
+
+// In GRPC the two streams operate independently, so clients and servers can read and write in whatever order they like.
+
+// In this case the server will wait to receive a Block before returning a BlockId
+
+    rpc SendBlocks(stream Block) returns (stream BlockId) {}
+}
+
+message Block {
+    bytes hash = 1;
+    string created_at = 2;
+    string last_modified = 3;
+}
+
+message BlockId {
+    string id = 1;
+}
+
