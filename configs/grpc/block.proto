@@ -15,7 +15,7 @@ service BlockResolver {
 
 // In this case the server will wait to receive a Block before returning a BlockId
 
-    rpc SendBlocks(stream Block) returns (stream BlockId) {}
+    rpc SendBlock(Block) returns (BlockId) {}
 }
 
 message Block {
