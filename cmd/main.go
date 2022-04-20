@@ -4,11 +4,22 @@ import (
 	"BlockCreator/internal/pkg/blockresolver/client"
 	blockresolver "BlockCreator/internal/pkg/blockresolver/configs/grpc"
 	"BlockCreator/internal/pkg/blockticker"
+	"BlockCreator/internal/pkg/blockutils"
+	"flag"
 	"fmt"
 	"log"
 )
 
+var (
+	grpcServerHostname = flag.String("grpcserverhost", "127.0.0.1", "The hostname of the grpc server that connects to the client stub within this application")
+)
+
 func main() {
+	flag.Parse()
+	// if set server host name to flag value. Either default of some hostname that has been passed to the flag
+	if *grpcServerHostname != "" {
+		blockutils.SERVER_HOSTNAME = *grpcServerHostname
+	}
 	fmt.Println("Block creator start up...")
 
 	// TODO refactor to error handle & gracefully exit through channels
