@@ -28,4 +28,4 @@ USER trevorjo
 FROM scratch AS run-env
 WORKDIR /build
 COPY --from=build-env /block_creator/app /build/
-ENTRYPOINT ["/build/app"]
+ENTRYPOINT ["/build/app", "-grpcserverhost", "blockreceiver"]
