@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  blockcreator:
+    container_name: blockcreator
+    hostname: blockcreator
+    build:
+      context: .
+    image: tjoluotch/blockcreator:1.0.0
+    ports:
+      - 50051:50051
+    restart: always
+    env_file:
+      - config.env
+#    networks:
+#      - chain
+
+networks:
+  default:
+    external:
+      name: chain
