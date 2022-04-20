@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+var BlockChan chan models.Block
+
+//var SignalChan chan struct{}
+
 // genID returns a generated UUID as a string, if there was an
 // error an empty string is returned followed by the error
 func genID() (string, error) {
@@ -42,6 +46,9 @@ func createBlock(createdAt time.Time) (*models.Block, error) {
 }
 
 func BlockTicker() error {
+	BlockChan = make(chan models.Block)
+	//SignalChan = make(chan struct{})
+
 	var block *models.Block
 	ticker := time.NewTicker(blockutils.BLOCK_INTERVALS * time.Second)
 	for t := range ticker.C {
@@ -51,7 +58,9 @@ func BlockTicker() error {
 			block = b
 		}
 		fmt.Printf("created new block: %+v\n\n", *block)
-
+		BlockChan <- *block
+		//SignalChan <- struct{}{}
+		//close(SignalChan)
 	}
 	return nil
 }
