@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blockcreator-deployment
+  annotations:
+    buildversion: "1.0.0"
+    blockversion: "1.0.0"
+    repository: "github.com/tjoluotch/BlockCreator"
+    goversion: "1.17"
+  labels:
+    app: blockcreator
+    environment: dev
+    version: "1.0.0"
+  namespace: dev
+spec:
+  minReadySeconds: 5
+  progressDeadlineSeconds: 601
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blockcreator
+      environment: dev
+      version: "1.0.0"
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: blockcreator
+        environment: dev
+        version: "1.0.0"
+    spec:
+      containers:
+      - name: block-creator
+        image: localhost:5000/tjoluotch/blockcreator:1.0.0
+        env:
+        - name: GRPC_GO_LOG_VERBOSITY_LEVEL
+          value: "99"
+        - name: GRPC_GO_LOG_SEVERITY_LEVEL
+          value: "info"
+        command:
+        - "/build/app"
+        - "-grpcserverhost"
+        - "blockreceiver"
